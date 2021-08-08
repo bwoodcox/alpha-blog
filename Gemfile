@@ -42,6 +42,10 @@ group :development do
   gem 'listen', '~> 3.3'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+  # Solargraph support
+  gem 'solargraph', '>= 0.43.0'
+  gem 'rubocop', '>= 1.18.4'
+
 end
 
 group :test do
