@@ -1,6 +1,4 @@
 class ArticlesController < ApplicationController
-  has_many :article_categories
-  has_many :categories, through: :article_categories
   before_action :find_article, only: [ :show, :edit, :update, :destroy ]
   before_action :require_user, except: [ :index, :show ]
   before_action :require_same_user, only: [ :edit, :update, :destroy ]
@@ -20,7 +18,7 @@ class ArticlesController < ApplicationController
   end
 
   def create
-    @article = Article.new(whitelist_params)
+    @article = Article.new(article_params)
     @article.user = current_user
     if @article.save
       flash[:notice] = "Article saved successfully."
@@ -31,7 +29,7 @@ class ArticlesController < ApplicationController
   end
 
   def update
-    if @article.update(whitelist_params)
+    if @article.update(article_params)
       flash[:notice] = "Article updated successfully."
       redirect_to @article 
     else
@@ -51,8 +49,8 @@ class ArticlesController < ApplicationController
     @article = Article.find(params[:id])
   end
 
-  def whitelist_params
-    params.require(:article).permit(:title, :description)
+  def article_params
+    params.require(:article).permit(:title, :description, category_ids: [])
   end
 
   def require_same_user

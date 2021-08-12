@@ -1,6 +1,4 @@
 class CategoriesController < ApplicationController
-  has_many :article_categories
-  has_many :articles, through: :article_categories
   before_action :require_admin, except: [:index, :show]
 
   def index
