@@ -1,4 +1,6 @@
 class ArticlesController < ApplicationController
+  has_many :article_categories
+  has_many :categories, through: :article_categories
   before_action :find_article, only: [ :show, :edit, :update, :destroy ]
   before_action :require_user, except: [ :index, :show ]
   before_action :require_same_user, only: [ :edit, :update, :destroy ]
