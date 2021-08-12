@@ -1,8 +1,13 @@
 class CategoriesController < ApplicationController
   before_action :require_admin, except: [:index, :show]
+  before_action :find_category, only: [:show, :edit, :update]
 
   def index
     @categories = Category.paginate(page: params[:page], per_page: 5)
+  end
+
+  def show
+    @articles = @category.articles.paginate(page: params[:page], per_page: 5)
   end
 
   def new
@@ -19,9 +24,16 @@ class CategoriesController < ApplicationController
     end
   end
 
-  def show
-    @category = Category.find(params[:id])
-    @articles = @category.articles.paginate(page: params[:page], per_page: 5)
+  def edit
+  end
+
+  def update
+    if @category.udpate(category_params)
+      flash[:notice] = "Category updated successfully."
+      redirect_to categories_path
+    else
+      render 'edit'
+    end
   end
 
   private
@@ -34,5 +46,9 @@ class CategoriesController < ApplicationController
       flash[:alert] = "Only admin usrs can create categories."
       redirect_to categories_path
     end
+  end
+
+  def find_category
+    @category = Category.find(params[:id])
   end
 end
